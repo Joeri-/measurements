@@ -17,16 +17,16 @@ public class Application {
 
         List<Measurement> measurementList = app.readMeasurementsFromFile(MEASUREMENTS_FILE);
 
-        // Task 1
-        for (Measurement measurement : measurementList) {
-            Key key = new Key(measurement.getResourceId(), measurement.getDeviceName(), measurement.getDeviceGroup().toString());
-            measurements.put(key, measurement);
-        }
-
         System.out.println("\nTask 1:");
         System.out.println("---------");
+
+        for (Measurement measurement : measurementList) {
+            measurements.put(measurement.getKey(), measurement);
+        }
+
         System.out.println("\nMeasurements loaded successfully.");
 
+        // Prep for Task 2 and 3
         PowerMap powerMap = new PowerMap();
         powerMap.parseMeasurements(measurements);
 

@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Key {
     @JsonProperty
-    private String resourceId;
+    private final String resourceId;
     @JsonProperty
-    private String deviceName;
+    private final String deviceName;
     @JsonProperty
-    private String deviceGroup;
+    private final String deviceGroup;
 
     public Key(String resourceId, String deviceName, String deviceGroup) {
         this.resourceId = resourceId;
