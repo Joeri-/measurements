@@ -52,5 +52,7 @@ public class Application {
         powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_A, Direction.OUT);
         powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_B, Direction.IN);
         powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_B, Direction.OUT);
+//
+//        powerMap.printSortedMaxPowerDevicesPerGroupAndDirection();
     }
 }
