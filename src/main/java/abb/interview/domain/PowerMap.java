@@ -8,9 +8,11 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
     public PowerMap() {
         for (DeviceGroup deviceGroup : getSortedListOfDeviceGroups()) {
             Map<Direction, List<Measurement>> deviceGroupMap = new HashMap<>();
+
             for (Direction direction : getSortedListOfDirections()) {
                 deviceGroupMap.put(direction, new ArrayList<>());
             }
+
             this.put(deviceGroup, deviceGroupMap);
         }
     }

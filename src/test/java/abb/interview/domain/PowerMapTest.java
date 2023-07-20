@@ -30,6 +30,11 @@ class PowerMapTest {
         measurementGroupBDirectionOut = new Measurement();
         measurementGroupBDirectionOut.setPower(List.of(new Power(1111.0, 2222.0, 3333.0, 1L)));
     }
+
+    @Test
+    void parseMeasurements_shouldFillPowerMap() {
+        // Todo
+    }
     @Test
     void calcTotalPower_shouldReturnTotalPowerObject() {
         PowerMap powerMap = new PowerMap();
@@ -64,5 +69,10 @@ class PowerMapTest {
                 () -> assertEquals(4444.0, totalPowerOutB.getMax()),
                 () -> assertEquals(6666.0, totalPowerOutB.getAvg())
         );
+    }
+
+    @Test
+    void constructSortedMaxPowerDevicesPerGroupAndDirection_shouldReturnCorrectlySortedList() {
+        //Todo
     }
 }
