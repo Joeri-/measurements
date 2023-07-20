@@ -6,21 +6,25 @@ import java.util.stream.Collectors;
 public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measurement>>> {
 
     public PowerMap() {
-        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values())
-                .sorted()
-                .collect(Collectors.toList());
-
-        List<Direction> sortedDirection = Arrays.stream(Direction.values())
-                .sorted()
-                .collect(Collectors.toList());
-
-        for (DeviceGroup deviceGroup : sortedDeviceGroup) {
+        for (DeviceGroup deviceGroup : getSortedListOfDeviceGroups()) {
             Map<Direction, List<Measurement>> deviceGroupMap = new HashMap<>();
-            for (Direction direction : sortedDirection) {
+            for (Direction direction : getSortedListOfDirections()) {
                 deviceGroupMap.put(direction, new ArrayList<>());
             }
             this.put(deviceGroup, deviceGroupMap);
         }
+    }
+
+    private List<DeviceGroup> getSortedListOfDeviceGroups() {
+        return Arrays.stream(DeviceGroup.values())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private List<Direction> getSortedListOfDirections() {
+        return Arrays.stream(Direction.values())
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     public void parseMeasurements(Measurements measurements) {
@@ -31,16 +35,8 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
     }
 
     public void printTotalPowerPerGroupAndDirection() {
-        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values())
-                .sorted()
-                .collect(Collectors.toList());
-
-        List<Direction> sortedDirection = Arrays.stream(Direction.values())
-                .sorted()
-                .collect(Collectors.toList());
-
-        for (DeviceGroup deviceGroup : sortedDeviceGroup) {
-            for (Direction direction : sortedDirection) {
+        for (DeviceGroup deviceGroup : getSortedListOfDeviceGroups()) {
+            for (Direction direction : getSortedListOfDirections()) {
                 Power totalPower = this.calcTotalPowerPerGroupAndDirection(deviceGroup, direction);
 
                 System.out.println("\n" + deviceGroup);
@@ -83,20 +79,17 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
     }
 
     public void printSortedMaxPowerDevicesPerGroupAndDirection() {
+        for (PrintableDeviceWithMaxPower printableDeviceWithMaxPower : constructSortedMaxPowerDevicesPerGroupAndDirection()) {
+            System.out.println(printableDeviceWithMaxPower);
+        }
+    }
 
-        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values())
-                .sorted()
-                .collect(Collectors.toList());
-
-        List<Direction> sortedDirection = Arrays.stream(Direction.values())
-                .sorted()
-                .collect(Collectors.toList());
+    public List<PrintableDeviceWithMaxPower> constructSortedMaxPowerDevicesPerGroupAndDirection() {
 
         List<PrintableDeviceWithMaxPower> sortedListOfEverything = new ArrayList<>();
 
-        for (DeviceGroup deviceGroup : sortedDeviceGroup) {
-            for (Direction direction : sortedDirection) {
-
+        for (DeviceGroup deviceGroup : getSortedListOfDeviceGroups()) {
+            for (Direction direction : getSortedListOfDirections()) {
                 List<PrintableDeviceWithMaxPower> devicesWithMaxPower = this.get(deviceGroup).get(direction).stream()
                         .map(measurement -> new PrintableDeviceWithMaxPower(measurement))
                         .sorted(Comparator.comparingDouble(PrintableDeviceWithMaxPower::getMaxPower))
@@ -106,8 +99,6 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
             }
         }
 
-        for (PrintableDeviceWithMaxPower printableDeviceWithMaxPower : sortedListOfEverything) {
-            System.out.println(printableDeviceWithMaxPower);
-        }
+        return sortedListOfEverything;
     }
 }
