@@ -43,9 +43,9 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
 
                 System.out.println("\n" + deviceGroup);
                 System.out.println("Direction: " + direction);
-                System.out.println("\tAVG: " + String.format("%.4f", totalPower.getAvg()));
-                System.out.println("\tMIN: " + String.format("%.4f", totalPower.getMin()));
-                System.out.println("\tMAX: " + String.format("%.4f", totalPower.getMax()));
+                System.out.println("\tAVG: " + String.format(Locale.US, "%.4f", totalPower.getAvg()));
+                System.out.println("\tMIN: " + String.format(Locale.US, "%.4f", totalPower.getMin()));
+                System.out.println("\tMAX: " + String.format(Locale.US, "%.4f", totalPower.getMax()));
             }
         }
     }
@@ -55,25 +55,25 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
 
         totalPower.setAvg(
                 this.get(groupName).get(direction).stream()
-                        .map(measurement -> measurement.getPower())
+                        .map(Measurement::getPower)
                         .flatMap(List::stream)
-                        .map(power -> power.getAvg())
+                        .map(Power::getAvg)
                         .mapToDouble(Double::doubleValue).sum()
         );
 
         totalPower.setMin(
                 this.get(groupName).get(direction).stream()
-                        .map(measurement -> measurement.getPower())
+                        .map(Measurement::getPower)
                         .flatMap(List::stream)
-                        .map(power -> power.getMin())
+                        .map(Power::getMin)
                         .mapToDouble(Double::doubleValue).sum()
         );
 
         totalPower.setMax(
                 this.get(groupName).get(direction).stream()
-                        .map(measurement -> measurement.getPower())
+                        .map(Measurement::getPower)
                         .flatMap(List::stream)
-                        .map(power -> power.getMax())
+                        .map(Power::getMax)
                         .mapToDouble(Double::doubleValue).sum()
         );
 
@@ -93,7 +93,7 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
         for (DeviceGroup deviceGroup : getSortedListOfDeviceGroups()) {
             for (Direction direction : getSortedListOfDirections()) {
                 List<PrintableDeviceWithMaxPower> devicesWithMaxPower = this.get(deviceGroup).get(direction).stream()
-                        .map(measurement -> new PrintableDeviceWithMaxPower(measurement))
+                        .map(PrintableDeviceWithMaxPower::new)
                         .sorted(Comparator.comparingDouble(PrintableDeviceWithMaxPower::getMaxPower))
                         .collect(Collectors.toList());
 

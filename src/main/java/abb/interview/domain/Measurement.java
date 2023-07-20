@@ -66,7 +66,7 @@ public class Measurement {
 
     public OptionalDouble getMaxPowerOfDevice() {
         return this.getPower().stream()
-                .map(power -> power.getMax())
+                .map(Power::getMax)
                 .mapToDouble(Double::doubleValue)
                 .max();
     }

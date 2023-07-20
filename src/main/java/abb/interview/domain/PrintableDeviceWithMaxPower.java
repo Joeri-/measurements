@@ -1,16 +1,14 @@
 package abb.interview.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class PrintableDeviceWithMaxPower {
 
-    private String deviceId;
-    private DeviceGroup deviceGroup;
-    private Direction direction;
-    private double maxPower;
+    private final String deviceId;
+    private final DeviceGroup deviceGroup;
+    private final Direction direction;
+    private final double maxPower;
 
 
     public PrintableDeviceWithMaxPower(Measurement measurement) {
@@ -30,7 +28,20 @@ public class PrintableDeviceWithMaxPower {
                 "deviceId='" + deviceId + '\'' +
                 ", deviceGroup=" + deviceGroup +
                 ", direction=" + direction +
-                ", maxPower=" + String.format("%.4f", maxPower) +
+                ", maxPower=" + String.format(Locale.US, "%.4f", maxPower) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PrintableDeviceWithMaxPower that = (PrintableDeviceWithMaxPower) o;
+        return Double.compare(that.maxPower, maxPower) == 0 && Objects.equals(deviceId, that.deviceId) && deviceGroup == that.deviceGroup && direction == that.direction;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deviceId, deviceGroup, direction, maxPower);
     }
 }
