@@ -10,12 +10,12 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
         groupA.put(Direction.IN, new ArrayList<>());
         groupA.put(Direction.OUT, new ArrayList<>());
 
-        // generalize to all options for direction
+        // Todo: generalize to all options for direction
         Map<Direction, List<Measurement>> groupB = new HashMap<>();
         groupB.put(Direction.IN, new ArrayList<>());
         groupB.put(Direction.OUT, new ArrayList<>());
 
-        // generalize to all options for deviceGroup
+        // Todo: generalize to all options for deviceGroup
         this.put(DeviceGroup.GROUP_A, groupA);
         this.put(DeviceGroup.GROUP_B, groupB);
     }
@@ -27,14 +27,26 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
         }
     }
 
-    public void printTotalPowerPerGroupAndDirection(DeviceGroup groupName, Direction direction) {
-        Power totalPower = this.calcTotalPowerPerGroupAndDirection(groupName, direction);
+    public void printTotalPowerPerGroupAndDirection() {
+        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values())
+                .sorted()
+                .collect(Collectors.toList());
 
-        System.out.println("\n" + groupName);
-        System.out.println("Direction: " + direction);
-        System.out.println("\tAVG: " + String.format("%.4f", totalPower.getAvg()));
-        System.out.println("\tMIN: " + String.format("%.4f", totalPower.getMin()));
-        System.out.println("\tMAX: " + String.format("%.4f", totalPower.getMax()));
+        List<Direction> sortedDirection = Arrays.stream(Direction.values())
+                .sorted()
+                .collect(Collectors.toList());
+
+        for (DeviceGroup deviceGroup : sortedDeviceGroup) {
+            for (Direction direction : sortedDirection) {
+                Power totalPower = this.calcTotalPowerPerGroupAndDirection(deviceGroup, direction);
+
+                System.out.println("\n" + deviceGroup);
+                System.out.println("Direction: " + direction);
+                System.out.println("\tAVG: " + String.format("%.4f", totalPower.getAvg()));
+                System.out.println("\tMIN: " + String.format("%.4f", totalPower.getMin()));
+                System.out.println("\tMAX: " + String.format("%.4f", totalPower.getMax()));
+            }
+        }
     }
 
     public Power calcTotalPowerPerGroupAndDirection(DeviceGroup groupName, Direction direction) {
@@ -75,7 +87,12 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
         for (DeviceGroup deviceGroup : sortedDeviceGroup) {
             for (Direction direction : sortedDirection) {
 
+                List<PrintableDeviceWithMaxPower> devicesWithMaxPower = this.get(deviceGroup).get(direction).stream()
+                        .map(measurement -> new PrintableDeviceWithMaxPower(measurement))
+                        .sorted(Comparator.comparingDouble(PrintableDeviceWithMaxPower::getMaxPower))
+                        .collect(Collectors.toList());
 
+                System.out.println(devicesWithMaxPower);
             }
         }
     }

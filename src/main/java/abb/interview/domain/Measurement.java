@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @JsonRootName("measurement")
 public class Measurement {
@@ -61,5 +62,12 @@ public class Measurement {
 
     public Key getKey() {
         return new Key(resourceId,deviceName,deviceGroup.toString());
+    }
+
+    public OptionalDouble getMaxPowerOfDevice() {
+        return this.getPower().stream()
+                .map(power -> power.getMax())
+                .mapToDouble(Double::doubleValue)
+                .max();
     }
 }

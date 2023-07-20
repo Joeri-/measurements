@@ -48,11 +48,10 @@ public class Application {
         PowerMap powerMap = new PowerMap();
         powerMap.parseMeasurements(measurements);
 
-        powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_A, Direction.IN);
-        powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_A, Direction.OUT);
-        powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_B, Direction.IN);
-        powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_B, Direction.OUT);
-//
-//        powerMap.printSortedMaxPowerDevicesPerGroupAndDirection();
+        System.out.println("\nTask 2:");
+        powerMap.printTotalPowerPerGroupAndDirection();
+
+        System.out.println("\nTask 3:");
+        powerMap.printSortedMaxPowerDevicesPerGroupAndDirection();
     }
 }
