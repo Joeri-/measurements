@@ -8,10 +8,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ApplicationTest {
+class PowerMapTest {
 
     @Test
-    void firstTest() {
+    void calcTotalPower_shouldReturnTotalPowerObject() {
         PowerMap powerMap = new PowerMap();
         Map<Direction, List<Power>> groupAPowerList = new HashMap<>();
         Map<Direction, List<Power>> groupBPowerList = new HashMap<>();

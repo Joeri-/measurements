@@ -45,26 +45,8 @@ public class Application {
     }
 
     public void getTotalPerGroupAndPerDirection(Measurements measurements) {
-
-//        Map<DeviceGroup, Map<Direction, List<Power>>> powerMap = new HashMap<>();
         PowerMap powerMap = new PowerMap();
-        Map<Direction, List<Power>> groupA = new HashMap<>();
-        groupA.put(Direction.IN, new ArrayList<>());
-        groupA.put(Direction.OUT, new ArrayList<>());
-
-        // generalize to all options for direction
-        Map<Direction, List<Power>> groupB = new HashMap<>();
-        groupB.put(Direction.IN, new ArrayList<>());
-        groupB.put(Direction.OUT, new ArrayList<>());
-
-        // generalize to all options for deviceGroup
-        powerMap.put(DeviceGroup.GROUP_A, groupA);
-        powerMap.put(DeviceGroup.GROUP_B, groupB);
-
-        for (Key key : measurements.keySet()) {
-            Measurement m = measurements.get(key);
-            powerMap.get(m.getDeviceGroup()).get(m.getDirection()).addAll(m.getPower());
-        }
+        powerMap.parseMeasurements(measurements);
 
         powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_A, Direction.IN);
         powerMap.printTotalPowerPerGroupAndDirection(DeviceGroup.GROUP_A, Direction.OUT);
