@@ -55,4 +55,14 @@ public class Power {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Power{" +
+                "min=" + min +
+                ", max=" + max +
+                ", avg=" + avg +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
