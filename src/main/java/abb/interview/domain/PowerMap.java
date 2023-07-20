@@ -6,18 +6,21 @@ import java.util.stream.Collectors;
 public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measurement>>> {
 
     public PowerMap() {
-        Map<Direction, List<Measurement>> groupA = new HashMap<>();
-        groupA.put(Direction.IN, new ArrayList<>());
-        groupA.put(Direction.OUT, new ArrayList<>());
+        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values())
+                .sorted()
+                .collect(Collectors.toList());
 
-        // Todo: generalize to all options for direction
-        Map<Direction, List<Measurement>> groupB = new HashMap<>();
-        groupB.put(Direction.IN, new ArrayList<>());
-        groupB.put(Direction.OUT, new ArrayList<>());
+        List<Direction> sortedDirection = Arrays.stream(Direction.values())
+                .sorted()
+                .collect(Collectors.toList());
 
-        // Todo: generalize to all options for deviceGroup
-        this.put(DeviceGroup.GROUP_A, groupA);
-        this.put(DeviceGroup.GROUP_B, groupB);
+        for (DeviceGroup deviceGroup : sortedDeviceGroup) {
+            Map<Direction, List<Measurement>> deviceGroupMap = new HashMap<>();
+            for (Direction direction : sortedDirection) {
+                deviceGroupMap.put(direction, new ArrayList<>());
+            }
+            this.put(deviceGroup, deviceGroupMap);
+        }
     }
 
     public void parseMeasurements(Measurements measurements) {
@@ -81,8 +84,15 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
 
     public void printSortedMaxPowerDevicesPerGroupAndDirection() {
 
-        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values()).sorted().collect(Collectors.toList());
-        List<Direction> sortedDirection = Arrays.stream(Direction.values()).sorted().collect(Collectors.toList());
+        List<DeviceGroup> sortedDeviceGroup = Arrays.stream(DeviceGroup.values())
+                .sorted()
+                .collect(Collectors.toList());
+
+        List<Direction> sortedDirection = Arrays.stream(Direction.values())
+                .sorted()
+                .collect(Collectors.toList());
+
+        List<PrintableDeviceWithMaxPower> sortedListOfEverything = new ArrayList<>();
 
         for (DeviceGroup deviceGroup : sortedDeviceGroup) {
             for (Direction direction : sortedDirection) {
@@ -92,8 +102,12 @@ public class PowerMap extends HashMap<DeviceGroup, Map<Direction, List<Measureme
                         .sorted(Comparator.comparingDouble(PrintableDeviceWithMaxPower::getMaxPower))
                         .collect(Collectors.toList());
 
-                System.out.println(devicesWithMaxPower);
+                sortedListOfEverything.addAll(devicesWithMaxPower);
             }
+        }
+
+        for (PrintableDeviceWithMaxPower printableDeviceWithMaxPower : sortedListOfEverything) {
+            System.out.println(printableDeviceWithMaxPower);
         }
     }
 }

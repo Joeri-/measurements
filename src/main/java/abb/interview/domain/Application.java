@@ -12,17 +12,33 @@ public class Application {
     private static final Measurements measurements = new Measurements();
     private static final String MEASUREMENTS_FILE = "measurements.json";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Application app = new Application();
 
         List<Measurement> measurementList = app.readMeasurementsFromFile(MEASUREMENTS_FILE);
 
+        // Task 1
         for (Measurement measurement : measurementList) {
             Key key = new Key(measurement.getResourceId(), measurement.getDeviceName(), measurement.getDeviceGroup().toString());
             measurements.put(key, measurement);
         }
 
-        app.getTotalPerGroupAndPerDirection(measurements);
+        System.out.println("\nTask 1:");
+        System.out.println("---------");
+        System.out.println("\nMeasurements loaded successfully.");
+
+        PowerMap powerMap = new PowerMap();
+        powerMap.parseMeasurements(measurements);
+
+        // Task 2
+        System.out.println("\nTask 2:");
+        System.out.println("---------");
+        powerMap.printTotalPowerPerGroupAndDirection();
+
+        // Task 3
+        System.out.println("\nTask 3:");
+        System.out.println("---------\n");
+        powerMap.printSortedMaxPowerDevicesPerGroupAndDirection();
     }
 
     private List<Measurement> readMeasurementsFromFile(String fileName) {
@@ -42,16 +58,5 @@ public class Application {
             System.out.println(e.getStackTrace());
             return Collections.emptyList();
         }
-    }
-
-    public void getTotalPerGroupAndPerDirection(Measurements measurements) {
-        PowerMap powerMap = new PowerMap();
-        powerMap.parseMeasurements(measurements);
-
-        System.out.println("\nTask 2:");
-        powerMap.printTotalPowerPerGroupAndDirection();
-
-        System.out.println("\nTask 3:");
-        powerMap.printSortedMaxPowerDevicesPerGroupAndDirection();
     }
 }

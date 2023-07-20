@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,11 +20,14 @@ class PowerMapTest {
     @BeforeEach
     void setup() {
         measurementGroupADirectionIn = new Measurement();
-        measurementGroupADirectionIn.setPower(List.of(new Power(100.0, 200.0, 300.0, 1L)));
+        measurementGroupADirectionIn.setPower(List.of( new Power(100.0, 200.0, 300.0, 1L)));
+
         measurementGroupADirectionOut = new Measurement();
         measurementGroupADirectionOut.setPower(List.of(new Power(10.0, 20.0, 30.0, 1L)));
+
         measurementGroupBDirectionIn = new Measurement();
         measurementGroupBDirectionIn.setPower(List.of(new Power(11.0, 22.0, 33.0, 1L)));
+
         measurementGroupBDirectionOut = new Measurement();
         measurementGroupBDirectionOut.setPower(List.of(new Power(1111.0, 2222.0, 3333.0, 1L)));
     }
