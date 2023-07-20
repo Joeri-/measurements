@@ -13,7 +13,7 @@ public class Measurement {
     @JsonProperty
     private String deviceName;
     @JsonProperty
-    private String deviceGroup;
+    private DeviceGroup deviceGroup;
     @JsonProperty
     private Direction direction;
     @JsonProperty
@@ -35,11 +35,11 @@ public class Measurement {
         this.deviceName = deviceName;
     }
 
-    public String getDeviceGroup() {
+    public DeviceGroup getDeviceGroup() {
         return deviceGroup;
     }
 
-    public void setDeviceGroup(String deviceGroup) {
+    public void setDeviceGroup(DeviceGroup deviceGroup) {
         this.deviceGroup = deviceGroup;
     }
 
@@ -60,6 +60,6 @@ public class Measurement {
     }
 
     public Key getKey() {
-        return new Key(resourceId,deviceName,deviceGroup);
+        return new Key(resourceId,deviceName,deviceGroup.toString());
     }
 }

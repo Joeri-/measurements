@@ -18,12 +18,11 @@ public class Application {
         List<Measurement> measurementList = app.readMeasurementsFromFile(MEASUREMENTS_FILE);
 
         for (Measurement measurement : measurementList) {
-            Key key = new Key(measurement.getResourceId(), measurement.getDeviceName(), measurement.getDeviceGroup());
+            Key key = new Key(measurement.getResourceId(), measurement.getDeviceName(), measurement.getDeviceGroup().toString());
             measurements.put(key, measurement);
         }
 
         app.getTotalPerGroupAndPerDirection(measurements);
-
     }
 
     private List<Measurement> readMeasurementsFromFile(String fileName) {
@@ -45,9 +44,9 @@ public class Application {
         }
     }
 
-    private void getTotalPerGroupAndPerDirection(Measurements measurements) {
+    public void getTotalPerGroupAndPerDirection(Measurements measurements) {
 
-        Map<String, Map<Direction, List<Power>>> powerMap = new HashMap<>();
+        Map<DeviceGroup, Map<Direction, List<Power>>> powerMap = new HashMap<>();
         Map<Direction, List<Power>> groupA = new HashMap<>();
         groupA.put(Direction.IN, new ArrayList<>());
         groupA.put(Direction.OUT, new ArrayList<>());
@@ -57,22 +56,23 @@ public class Application {
         groupB.put(Direction.IN, new ArrayList<>());
         groupB.put(Direction.OUT, new ArrayList<>());
 
-        powerMap.put("group_a", groupA);
-        powerMap.put("group_b", groupB);
+        // generalize to all options for deviceGroup
+        powerMap.put(DeviceGroup.GROUP_A, groupA);
+        powerMap.put(DeviceGroup.GROUP_B, groupB);
 
         for (Key key : measurements.keySet()) {
             Measurement m = measurements.get(key);
             powerMap.get(m.getDeviceGroup()).get(m.getDirection()).addAll(m.getPower());
         }
 
-        printTotalPowerPerGroupAndDirection(powerMap, "group_a", Direction.IN);
-        printTotalPowerPerGroupAndDirection(powerMap, "group_a", Direction.OUT);
-        printTotalPowerPerGroupAndDirection(powerMap, "group_b", Direction.IN);
-        printTotalPowerPerGroupAndDirection(powerMap, "group_b", Direction.OUT);
+        printTotalPowerPerGroupAndDirection(powerMap, DeviceGroup.GROUP_A, Direction.IN);
+        printTotalPowerPerGroupAndDirection(powerMap, DeviceGroup.GROUP_A, Direction.OUT);
+        printTotalPowerPerGroupAndDirection(powerMap, DeviceGroup.GROUP_B, Direction.IN);
+        printTotalPowerPerGroupAndDirection(powerMap, DeviceGroup.GROUP_B, Direction.OUT);
     }
 
-    private Power calcTotalPowerPerGroupAndDirection(Map<String, Map<Direction, List<Power>>> powerMap,
-                                                     String groupName,
+    public Power calcTotalPowerPerGroupAndDirection(Map<DeviceGroup, Map<Direction, List<Power>>> powerMap,
+                                                     DeviceGroup groupName,
                                                      Direction direction) {
         Power totalPower = new Power();
 
@@ -94,8 +94,8 @@ public class Application {
         return totalPower;
     }
 
-    private void printTotalPowerPerGroupAndDirection(Map<String, Map<Direction, List<Power>>> powerMap,
-                                                     String groupName,
+    public void printTotalPowerPerGroupAndDirection(Map<DeviceGroup, Map<Direction, List<Power>>> powerMap,
+                                                     DeviceGroup groupName,
                                                      Direction direction) {
         Power totalPower = calcTotalPowerPerGroupAndDirection(powerMap, groupName, direction);
 
