@@ -65,10 +65,15 @@ public class Application {
             powerMap.get(m.getDeviceGroup()).get(m.getDirection()).addAll(m.getPower());
         }
 
-        printTotalPower(powerMap);
+        printTotalPowerPerGroupAndDirection(powerMap, "group_a", Direction.IN);
+        printTotalPowerPerGroupAndDirection(powerMap, "group_a", Direction.OUT);
+        printTotalPowerPerGroupAndDirection(powerMap, "group_b", Direction.IN);
+        printTotalPowerPerGroupAndDirection(powerMap, "group_b", Direction.OUT);
     }
 
-    private Power calcTotalPower(Map<String, Map<Direction, List<Power>>> powerMap, String groupName, Direction direction) {
+    private Power calcTotalPowerPerGroupAndDirection(Map<String, Map<Direction, List<Power>>> powerMap,
+                                                     String groupName,
+                                                     Direction direction) {
         Power totalPower = new Power();
 
         totalPower.setAvg(
@@ -89,31 +94,15 @@ public class Application {
         return totalPower;
     }
 
-    private void printTotalPower(Map<String, Map<Direction, List<Power>>> powerMap) {
-        Power totalPowerGroupADirectionIn = calcTotalPower(powerMap, "group_a", Direction.IN);
-        Power totalPowerGroupADirectionOut = calcTotalPower(powerMap, "group_a", Direction.OUT);
-        Power totalPowerGroupBDirectionIn = calcTotalPower(powerMap, "group_b", Direction.IN);
-        Power totalPowerGroupBDirectionOut = calcTotalPower(powerMap, "group_b", Direction.OUT);
+    private void printTotalPowerPerGroupAndDirection(Map<String, Map<Direction, List<Power>>> powerMap,
+                                                     String groupName,
+                                                     Direction direction) {
+        Power totalPower = calcTotalPowerPerGroupAndDirection(powerMap, groupName, direction);
 
-        System.out.println("Group A: ");
-        System.out.println("IN:");
-        System.out.println("\tAVG: " + String.format("%.4f", totalPowerGroupADirectionIn.getAvg()));
-        System.out.println("\tMIN: " + String.format("%.4f", totalPowerGroupADirectionIn.getMin()));
-        System.out.println("\tMAX: " + String.format("%.4f", totalPowerGroupADirectionIn.getMax()));
-        System.out.println("OUT:");
-        System.out.println("\tAVG: " + String.format("%.4f", totalPowerGroupADirectionOut.getAvg()));
-        System.out.println("\tMIN: " + String.format("%.4f", totalPowerGroupADirectionOut.getMin()));
-        System.out.println("\tMAX: " + String.format("%.4f", totalPowerGroupADirectionOut.getMax()));
-
-        System.out.println("");
-        System.out.println("Group B: ");
-        System.out.println("IN:");
-        System.out.println("\tAVG: " + String.format("%.4f", totalPowerGroupBDirectionIn.getAvg()));
-        System.out.println("\tMIN: " + String.format("%.4f", totalPowerGroupBDirectionIn.getMin()));
-        System.out.println("\tMAX: " + String.format("%.4f", totalPowerGroupBDirectionIn.getMax()));
-        System.out.println("OUT:");
-        System.out.println("\tAVG: " + String.format("%.4f", totalPowerGroupBDirectionOut.getAvg()));
-        System.out.println("\tMIN: " + String.format("%.4f", totalPowerGroupBDirectionOut.getMin()));
-        System.out.println("\tMAX: " + String.format("%.4f", totalPowerGroupBDirectionOut.getMax()));
+        System.out.println("\n" + groupName);
+        System.out.println("Direction: " + direction);
+        System.out.println("\tAVG: " + String.format("%.4f", totalPower.getAvg()));
+        System.out.println("\tMIN: " + String.format("%.4f", totalPower.getMin()));
+        System.out.println("\tMAX: " + String.format("%.4f", totalPower.getMax()));
     }
 }
